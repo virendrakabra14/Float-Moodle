@@ -1,0 +1,21 @@
+👋Hey {{username}},<br>
+It appears the feedback file you submitted follows an improper format (if any).<br>
+Your file should contain text in the following format:<br>
+<pre>
+    {
+        "200050001":{
+            "grade":1.1,
+            "feedback":"Great job."
+        },
+        "200050002":{
+            "grade":0.7,
+            "feedback":"Why can't you be more like 001?"
+        },
+        ...
+    }
+</pre>
+<br>
+Note that the quotation marks must be " and not '.<br>
+Also note that there are commas between fields.<br>
+<br>
+{% include "end.html" %}

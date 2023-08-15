@@ -1,0 +1,49 @@
+<div style="margin: 10px;">
+
+<button class="btn btn-outline-primary" *ngIf="(!commenting)&&(level==0)&&(!disabled)" (click)="commenting=true">Add Comment</button>
+
+<form *ngIf="commenting">
+    <!-- <input type="text" id="-1" #postreplybox><button (click)="addReply(-1)">Post</button><button (click)="commenting=false">Cancel</button> -->
+    <div class="form-floating mb-3">
+        <input type="text" id="-1" class="form-control" placeholder="Comment" #postreplybox>
+        <label for="-1" class="form-label">Comment</label>
+    </div>
+    <button class="btn btn-outline-success" style="margin-right: 10px;" (click)="addReply(-1)">Post</button>
+    <button class="btn btn-outline-danger" (click)="commenting=false">Cancel</button>
+</form>
+
+<div class="commentstack" style="margin: 10px;">
+
+    <div *ngFor="let comment of comments">
+
+        <div class="{{getClassName(level)}}">
+
+            <blockquote class="blockquote" style="padding: .5rem 1rem; border-left: 0.25rem solid #eceeef; font-size:medium;">
+
+                <p class="mb-0">{{comment.text}}</p>
+                <footer class="blockquote-footer" style="margin-top: 0px; font-size: small;">{{comment.author}}, <cite>{{comment.datemade}}</cite></footer>
+
+                <button class="btn btn-outline-primary" *ngIf="(!comment.commenting)&&(!disabled)&&comment.replyable" (click)="comment.commenting=true" style="font-size: small;">+ Reply</button>
+                <button class="btn btn-outline-danger" *ngIf="(!comment.commenting)&&(!disabled)&&comment.replyable&&comment.authorid==authorid" (click)="deleteComment(comment.id)" style="font-size: small;"><i class="bi bi-trash"></i>Delete</button>
+                <form *ngIf="comment.commenting">
+                    <div class="form-floating mb-3" style="font-size: small;">
+                        <input type="text" id="{{comment.id}}" class="form-control" placeholder="Reply" #replybox>
+                        <label for="{{comment.id}}" class="form-label">Reply</label>
+                    </div>
+                    <button class="btn btn-outline-success" style="margin-right: 10px; font-size: small;" (click)="addReply(comment.id)">Post</button>
+                    <button class="btn btn-outline-danger" style="font-size: small;" (click)="comment.commenting=false">Cancel</button>
+                </form>
+                
+            </blockquote>
+        
+        <app-commentstack [disabled]="disabled" [parent]="'Comment'" [comments]="comment.replies" [parentID]="comment.id" [level]="level + 1" #stacks></app-commentstack>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!--  style="font-size: x-small;" -->

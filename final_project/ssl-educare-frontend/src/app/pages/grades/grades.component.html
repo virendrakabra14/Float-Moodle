@@ -1,0 +1,17 @@
+<h3 style="margin: 20px;">Grades</h3>
+
+<div *ngIf="studentCourses.length>0" class="btn-group-vertical btn-group-lg" style="margin-left: 30px; margin-bottom:30px;">
+    <h4 style="margin-bottom: 10px;">Courses you attend:</h4>
+    <ng-container *ngFor="let course of studentCourses">
+        <a href="grades/{{course.courseID}}" class="btn btn-outline-primary" style="text-align: left !important;">{{course.courseCode}} : {{course.courseName}}</a>
+    </ng-container>
+</div>
+
+<br>
+
+<div *ngIf="instructorCourses.length>0" class="btn-group-vertical btn-group-lg" style="margin-left: 30px;">
+    <h4 style="margin-bottom: 10px;">Courses you instruct:</h4>
+    <ng-container *ngFor="let course of instructorCourses">
+        <a href="grades/{{course.courseID}}" class="btn btn-outline-primary" style="text-align: left !important;">{{course.courseCode}} : {{course.courseName}}</a>
+    </ng-container>
+</div>

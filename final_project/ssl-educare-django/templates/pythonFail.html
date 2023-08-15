@@ -1,0 +1,50 @@
+The autograder ⚙ failed to parse the output of the script 📃 you submitted
+ for grading Assignment {{number}}. The autograder used {{graderUsed}} to
+ run your script. The output from the process is given below:<br>
+ <p style="font-family:'Courier New', Courier, monospace;">
+    <pre>
+    {{output}}
+    </pre>
+</p>
+<h4>Guidelines for writing python scripts for the autograder:</h4>
+<ol>
+<li> The program will be run from a directory that contains the submissions
+sorted into folders for each student, named by their roll number. Your
+directory operations should be written with this in mind.<br>
+Example: The directory with your script looks like:<br>
+<pre>
+script.py
+200050001/mysubmission.exe
+200050002/mysubmission.txt
+...</pre>
+<br>
+
+</li>
+<li>
+    The program should print nothing but the json-serialized output
+    of a dictionary whose keys are your students' userids, and values
+    are dictionaries, each with a key-value pair for 'grade' and 'feedback.'
+    Your program can update this dictionary as it checks the submissions.
+    Example:<br>
+    <pre>
+    grades = {
+        "200050001":{
+            "grade":1,
+            "feedback":"Good job!"
+        },
+        "200050002":{
+            "grade":0,
+            "feedback":"Why can't you be more like 001?"
+        }
+    }
+    print(json.dumps(grades))##only print statement in the script, preferably at the end.
+    </pre>
+</li>
+<li>
+    As a standard coding practice, your script should be as error-safe as possible. Any function
+    that can cause the script to crash should be enclosed in try-except blocks
+</li>
+</ol>
+<br>
+<br>
+{% include "end.html" %}

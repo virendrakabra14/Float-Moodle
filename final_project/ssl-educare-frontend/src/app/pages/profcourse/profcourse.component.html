@@ -1,0 +1,164 @@
+<div class="container">
+    <mat-tab-group [animationDuration]="0">
+        <mat-tab label="Posts 📢">
+            <a *ngIf="accesslevel>1" class="btn btn-outline-primary text-left" style="text-align: left; padding: 15px;" (click)="hideAllForms();makingPost=true;">+ Create Post</a>
+            <form *ngIf="makingPost||editingPost" #postForm = "ngForm" (ngSubmit) = "makePost(postForm.value)">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="title" placeholder="Title" name="title" ngModel>
+                    <label for="title" class="form-label">Title of Post</label>
+                </div>
+                <div class="form-floating">
+                    <textarea class="form-control" id="instruction" placeholder="Instruction" name="instruction" ngModel></textarea>
+                    <label for="instruction" class="form-label">Instruction</label>
+                </div>
+                <div style="margin: 10px;">
+                    <uploader (sendfiles)="collectFiles($event)" #uploader></uploader>
+                </div>
+                <div style="margin: 10px;">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="releasePostNow" (change)="releasePostNow=!releasePostNow" ngModel>
+                        <label for="releasePostNow" class="form-check-label">Publish Immediately</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="discussable" ngModel>
+                        <label for="discussable" class="form-check-label">Discussable</label>
+                    </div>
+                </div>
+                <div class="form-floating" *ngIf="!releasePostNow">
+                    <input type="date" class="form-control" id="releaseDate" placeholder="ReleaseDate" name="releaseDate" (change)="validateDates(postForm)" ngModel>
+                    <label for="releaseDate" class="form-label">Release Date</label>
+                </div>
+                <div class="form-floating" *ngIf="!releasePostNow">
+                    <input type="time" class="form-control" id="releaseTime" placeholder="ReleaseTime" name="releaseTime"(change)="validateDates(postForm)" ngModel>
+                    <label for="releaseTime" class="form-label">Release Time</label>
+                </div>
+                <button *ngIf="releasePostNow&&makingPost"class="btn btn-outline-success" type="submit" style="margin: 10px;">Save and Publish</button>
+                <button *ngIf="(!releasePostNow)&&(makingPost)" class="btn btn-outline-success" type="submit" style="margin: 10px;">Save Draft</button>
+                <button *ngIf="editingPost" class="btn btn-outline-success" type="submit" style="margin: 10px;">Save Changes</button>
+                <button class="btn btn-outline-danger" (click)="makingPost=false;editingPost=false" style="margin: 10px;">Discard</button>
+            </form>
+            <hr/>
+            <!-- <h3>Posts <i class="bi bi-megaphone-fill" style="font-size: 2rem;"></i></h3> -->
+            <div *ngFor="let post of posts" style="width: 90%;">
+                <div class="container" style="margin: 30px;">
+                    <h5>{{post.number+1}}. {{post.title}} 
+                        <button class="btn btn-outline-dark" id="{{post.number}}" (click)="loadFormToEdit(post.number,'postform')"><i class="bi bi-pencil"></i>Edit</button>
+                        <button style="float: right;" class="btn btn-outline-dark" id="{{post.number}}" (click)="deleteElement('post',post.number)"><i class="bi bi-trash"></i>Delete</button>
+                    </h5>
+                    <p style="overflow: hidden;"><b>Instruction</b>: {{post.instruction}}</p>
+                    <div *ngIf="post.hasfiles" style="margin: 10px;">
+                        Files: <downloader [url]="post.files.url" [filename]="post.files.name"></downloader>
+                    </div>
+                    <a href="posts/{{courseid}}/{{post.number}}" target="_blank">Discussion <i class="bi bi-chat-text"></i></a>
+                        
+                </div>
+                <hr/>
+            </div>
+        
+            
+        
+        
+        </mat-tab>
+        <mat-tab label="Assignments 📝">
+            <a *ngIf="accesslevel>2" class="btn btn-outline-primary text-left" style="text-align: left; padding: 15px;" (click)="hideAllForms();makingAssignment=true;">+ Create Assignment</a>
+        
+            <form *ngIf="makingAssignment||editingAssignment" #assignForm = "ngForm" (ngSubmit) = "makeAssignmentData(assignForm.value)">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="title" placeholder="Title" name="title" ngModel>
+                    <label for="title" class="form-label">Title of Assignment</label>
+                </div>
+                <div class="form-floating">
+                    <textarea class="form-control" id="instruction" placeholder="Instruction" name="instruction" ngModel></textarea>
+                    <label for="instruction" class="form-label">Instruction</label>
+                </div>
+                <div style="margin: 10px;">
+                    <uploader (sendfiles)="collectFiles($event)" #uploader></uploader>
+                </div>
+                <p class="alert alert-danger" *ngIf="datesinvalid">Please ensure that the due date is not in the past and is after the release date.</p>
+                <div class="form-check" style="margin: 10px;">
+                    <input type="checkbox" class="form-check-input" name="releaseTaskNow" (change)="releaseTaskNow=!releaseTaskNow" ngModel>
+                    <label for="releaseTaskNow" class="form-check-label">Publish Immediately</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" name="weight" max="100" min="1" ngModel>
+                    <label for="weight" class="form-label">Weight of Assignment</label>
+                </div>
+        
+                <div class="form-floating" *ngIf="!releaseTaskNow">
+                    <input type="date" class="form-control" id="releaseDate" placeholder="ReleaseDate" name="releaseDate" (change)="validateDates(assignForm)" ngModel>
+                    <label for="releaseDate" class="form-label">Release Date</label>
+                </div>
+                <div class="form-floating" *ngIf="!releaseTaskNow">
+                    <input type="time" class="form-control" id="releaseTime" placeholder="ReleaseTime" name="releaseTime"(change)="validateDates(assignForm)" ngModel>
+                    <label for="releaseTime" class="form-label">Release Time</label>
+                </div>
+                <div class="form-floating">
+                    <input type="date" class="form-control" id="dueDate" placeholder="DueDate" name="dueDate" (change)="validateDates(assignForm)" ngModel>
+                    <label for="dueDate" class="form-label">Due Date</label>
+                </div>
+                <div class="form-floating">
+                    <input type="time" class="form-control" id="dueTime" placeholder="DueTime" name="dueTime" (change)="validateDates(assignForm)"ngModel>
+                    <label for="dueTime" class="form-label">Due Time</label>
+                </div>
+                <button *ngIf="releaseTaskNow&&(makingAssignment)" class="btn btn-outline-success" type="submit" style="margin: 10px;">Save and Publish</button>
+                <button *ngIf="!releaseTaskNow&&(makingAssignment)" class="btn btn-outline-success" type="submit" style="margin: 10px;">Save Draft</button>
+                <button *ngIf="editingAssignment" type="submit" class="btn btn-outline-success" type="submit" style="margin: 10px;">Save Changes</button>
+                <button class="btn btn-outline-danger" (click)="makingAssignment=false;editingAssignment=false" style="margin: 10px;">Discard</button>
+            </form>
+            <hr/>
+                    
+    <!-- <h3>Assignments <i class="bi bi-file-earmark-fill" style="font-size: 2rem;"></i></h3> -->
+    <div *ngFor="let task of assignments" style="width:90%;">
+        
+        <div class="container" style="margin: 30px;">
+            <h5>{{task.number+1}}. {{task.title}} 
+                <button class="btn btn-outline-dark" id="{{task.number}}" (click)="loadFormToEdit(task.number,'assignform')"><i class="bi bi-pencil"></i>Edit</button>
+                <button style="float:right;" class="btn btn-outline-dark" id="{{task.number}}" (click)="deleteElement('assignment',task.number)"><i class="bi bi-trash"></i>Delete</button>
+            </h5>
+            <div class="btn-group-horizontal" style="margin: 0px; margin-left: 0px;">
+                <p *ngIf="course.students.length>task.seenby" class="btn btn-secondary text-left" style="text-align: left;margin:3px;padding: 0px;padding-left: 3px;padding-right:3px;"><i class="bi bi-eye"></i> {{task.seenby}}</p>
+                <p *ngIf="course.students.length>task.submittedby"class="btn btn-secondary text-left" style="text-align: left;margin:3px; padding: 0px;padding-left: 3px;padding-right:3px;"><i class="bi bi-check"></i> {{task.submittedby}}</p>
+                <p *ngIf="course.students.length==task.seenby"class="btn btn-success text-left" style="text-align: left;margin:3px;padding: 0px;padding-left: 3px;padding-right:3px;"><i class="bi bi-eye"></i> {{task.seenby}}</p>
+                <p *ngIf="course.students.length==task.submittedby" class="btn btn-success text-left" style="text-align: left;margin:3px; padding: 0px;padding-left: 3px;padding-right:3px;"><i class="bi bi-check"></i> {{task.submittedby}}</p>
+            </div>
+            <p style="overflow: hidden;"><b>Instruction</b>: {{task.instruction}}</p>
+            <div *ngIf="task.hasfiles" style="margin-left: 10px;">
+                Files: <downloader [url]="task.files.url" [filename]="task.files.name"></downloader>
+            </div>
+            <div style="margin: 10px;">
+                <p *ngIf="task.weight!=null" class="alert alert-success">Weightage: {{task.weight}}</p>
+                <p *ngIf="task.weight==null" class="alert alert-warning">Weightage not set</p>
+            </div>
+            <p>Release: {{task.releaseDate}}, {{task.releaseTime}} | Due at: {{task.dueDate}}, {{task.dueTime}}</p>
+            <div class="btn-group">
+                <button class="btn btn-outline-dark" id="{{task.number}}" (click)="downloadSubmissions(task.number)"><i class="bi bi-download"></i> Submissions</button>
+                <button class="btn btn-outline-dark" id="{{task.number}}" (click)="triggerFileChooser(task.number, 'manual')"><i class="bi bi-upload"></i> Feedback</button>
+                <button class="btn btn-outline-dark" id="{{task.number}}" (click)="triggerFileChooser(task.number, 'auto')"><i class="bi bi-gear"></i> Autograde</button>
+                <button *ngIf="!task.graded" class="btn btn-outline-success" id="{{task.number}}" (click)="markAsGraded(task.number)"><i class="bi bi-check"></i> Release Grades</button>
+                <button *ngIf="task.graded" class="btn btn-outline-danger" id="{{task.number}}" (click)="markAsGraded(task.number,false)"><i class="bi bi-x-circle"></i> Retract Grades</button>
+            </div>
+
+        </div>
+    </div>
+
+    <hr/>
+        </mat-tab>
+    <mat-tab label="Members 👨‍🎓🧙‍♂️👨‍🏫">
+        <mat-tab-group [animationDuration]="0">
+            <mat-tab label="Students">
+                <app-membertable (sendlist)="sendEditedList($event)" [courseid]="courseid" [data]="members['students']"  [title]="'Students'" [level]="accesslevel"></app-membertable>
+            </mat-tab>
+            <mat-tab label="Instructors">
+                <app-membertable (sendlist)="sendEditedList($event)" [courseid]="courseid" [data]="members['instructors']" [title]="'Instructors'" [level]="accesslevel"></app-membertable>
+            </mat-tab>
+            <mat-tab label="Wizards">
+                <app-membertable (sendlist)="sendEditedList($event)" [courseid]="courseid" [data]="members['wizards']" [title]="'Wizards'" [level]="accesslevel"></app-membertable> 
+            </mat-tab>
+        </mat-tab-group>
+        
+    </mat-tab>
+    </mat-tab-group>
+    
+<input type="file" style="visibility: hidden;" #hiddenSender (change)="submitGrader($event)">
+<a style="visibility: hidden;" target="_blank" #hiddenGetter></a>
+</div>

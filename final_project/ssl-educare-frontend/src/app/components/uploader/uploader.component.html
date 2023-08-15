@@ -1,0 +1,12 @@
+<button class="btn btn-outline-dark" type="button" (click)="dialogueBox()"><i class="bi bi-upload"></i> Files</button>
+<mat-chip-list>
+    <mat-chip *ngFor="let file of files" [removable]="true" (removed)="removeFile(file.name)">
+        {{file.name}}
+        <button matChipRemove>x
+            <!-- <mat-icon>cancel</mat-icon> -->
+          </button>
+    </mat-chip>
+
+</mat-chip-list>
+<div></div>
+<input type="file" multiple="multiple" (change)="updateFiles($event)" style="visibility: hidden;" #dboxer>

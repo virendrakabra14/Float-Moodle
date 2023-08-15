@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div style="width: 70%; margin: 20px; float: left;">
+      <h3>Hello, {{userdata.username}}!</h3>
+      <hr/>
+      <div *ngIf="studentCourses.length>0">
+      <h4>Courses you attend:</h4>
+      <app-course [isprof]="false" [courses]="studentCourses"></app-course>
+      <hr/>
+      </div>
+      <div *ngIf="instructorCourses.length>0">
+      <h4>Courses you instruct:</h4>
+      <app-course [isprof]="true" [courses]="instructorCourses"></app-course>
+      <hr/>
+      </div>
+      <div *ngIf="wizardCourses.length>0">
+      <h4>Courses you run:</h4>
+      <app-course [isprof]="true" [courses]="wizardCourses"></app-course>
+      </div>
+    </div>
+    <div style="width: 25%; float:right !important;">
+      <app-todolist></app-todolist>
+    </div>
+</div>

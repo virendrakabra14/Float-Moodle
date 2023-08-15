@@ -1,0 +1,46 @@
+<div class="container">
+    <h4>Assignment: {{taskdata.title}}</h4>
+    <hr/>
+    <p><b>Instruction</b>: {{taskdata.instruction}}</p>
+    <hr/>
+    <div *ngIf="taskdata.hasfiles">
+    <b>Files:</b> <br>
+    <downloader [url]="taskdata.files.url" [filename]="taskdata.files.name"></downloader>
+    <hr/>
+    </div>
+    <p *ngIf="taskdata.published">Released on: {{taskdata.releaseDate}}, {{taskdata.releaseTime}}</p>
+    <p *ngIf="!taskdata.published">Will be released on: {{taskdata.releaseDate}}, {{taskdata.releaseTime}}</p>
+    <hr/>
+    <p>Due by: {{taskdata.dueDate}}, {{taskdata.dueTime}}</p>
+    <hr/>
+</div>
+
+<div class="container" *ngIf="submitted">
+    <br>
+    <h4>Your Submission: </h4>
+    <hr/>
+    <b>Files:</b> <br>
+    <downloader [url]="file.url" [filename]="file.name"></downloader>
+    <hr/>
+    <p><b>Submitted at</b>: <time>{{submissiondata.time}}</time></p>
+    <hr/>
+    <p><b>Grade</b>: {{submissiondata.grade}}</p>
+    <hr/>
+    <p><b>Comments</b>:<app-commentstack [parent]="'Submission'" [parentID]="submissiondata.id" [comments]="submissiondata.comments"></app-commentstack></p>
+    <hr/>
+    <p><b>Grader's Feedback</b>: {{submissiondata.feedback}}</p>
+</div>
+
+<div class="container">
+<p *ngIf="(!(taskdata.acceptSubmission||submitted))&&(taskdata.published)" class="alert alert-danger">The deadline's gone by.</p>
+</div>
+
+<div *ngIf="(taskdata.acceptSubmission)" class="container">
+    <button *ngIf="(!submitting) && submitted" (click)="submitting=true;" class="btn btn-outline-success">Edit Submission</button>
+    <button *ngIf="!(submitted||submitting)" (click)="submitting=true;" class="btn btn-outline-success">Add Submission</button>
+    <form *ngIf="submitting"  #submissionForm = "ngForm" (ngSubmit) = "submitFile(submissionForm.value)">
+        <input type="file" name="file" (change)="onChange($event)" multiple="multiple" ngModel>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+    </form>
+    <hr/>
+</div>

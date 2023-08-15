@@ -1,0 +1,12 @@
+👋Hey {{username}},<br>
+<a href="{{link}}">📝 Assignment {{number}}</a> has been 📢 published!<br>
+You can find it on <a href="{{mainlink}}">Educare</a> under {{code}}.<br>
+🎯Title: {{title}}<br>
+✍Author: {{author}}<br>
+📌Instruction: {{instruction}}<br>
+{% if hasfile %}
+<a href="{{attachment}}" download>🔗Attachment</a><br>
+{% endif %}
+📅Due at: {{duedate}}<br>
+<br>
+{% include "end.html" %}

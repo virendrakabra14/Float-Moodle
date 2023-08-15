@@ -1,0 +1,69 @@
+<!-- <ng-container *ngFor="let item of taskGrades">
+    {{item.score}}
+</ng-container>
+
+<span *ngFor="let item of courseGrades | keyvalue">           
+    {{item.key}} : {{item.value}} <br>
+</span> -->
+
+<div style="margin: 30px;">
+    <h3>Grades for {{courseCode}} : {{courseName}}</h3>
+</div>
+
+<div style="margin: 40px;" *ngIf="isStudent">
+    <div *ngIf="count.length>0" style="margin-bottom: 10px;">       <!-- Only show if something has been graded! -->
+    <ng-container *ngIf="warningType==-1">
+        <div class="alert alert-danger" role="alert">
+            Alert : Your score is less than or equal to 30% of the average score.
+        </div>
+    </ng-container>
+    <ng-container *ngIf="warningType==0">
+        <div class="alert alert-warning" role="alert">
+            Warning : Your score is in the range 30-70% of the average score.
+        </div>
+    </ng-container>
+    <ng-container *ngIf="warningType==1">
+        <div class="alert alert-success" role="alert">
+            Your score is more than 70% of the average score.
+        </div>
+    </ng-container>
+    </div>
+    <button (click)="show1=!show1" class="btn btn-outline-primary">Statistics</button>
+    <div [hidden]="!show1 || (count.length<=0)" style="margin-top: 20px;">
+        <canvas id="studentCanvas" height="500" width="500"></canvas>
+    </div>
+    <div [hidden]="!show1 || (count.length>0)" style="margin: 10px;">
+        Nothing has been graded yet!
+    </div>
+</div>
+
+<div style="margin: 40px;" *ngIf="isInstructor">
+    <button (click)="show2=!show2" class="btn btn-outline-primary">Overall Course Statistics</button>
+    <div [hidden]="!show2 || (count.length<=0)" style="margin-top: 20px;">
+        <canvas id="teacherCanvas" height="500" width="500"></canvas>
+    </div>
+    <div [hidden]="!show2 || (count.length>0)" style="margin: 10px;">
+        Nothing has been graded yet!
+    </div>
+</div>
+
+<div style="margin: 40px;" *ngIf="isInstructor">
+    <button (click)="show3=!show3" class="btn btn-outline-primary">Histogram for the entire Course</button>
+    <div [hidden]="!show3 || (count.length<=0)" style="margin-top: 20px;">
+        <canvas id="histCanvas" height="500" width="500"></canvas>
+    </div>
+    <div [hidden]="!show3 || (count.length>0)" style="margin: 10px;">
+        Nothing has been graded yet!
+    </div>
+</div>
+
+<hr style="margin: 40px;" />
+
+<ng-container *ngIf="isInstructor">
+    <div style="margin: 40px;" *ngFor="let j of count">
+        <button (click)="show4[j]=!show4[j]" class="btn btn-outline-primary">Histogram for {{labels[j]}}</button>
+        <div [hidden]="!show4[j]" style="margin-top: 20px;">
+            <canvas id={{gradedAssignments[j]}} height="500" width="500"></canvas>
+        </div>
+    </div>
+</ng-container>

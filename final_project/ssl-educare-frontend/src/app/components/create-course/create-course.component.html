@@ -1,0 +1,29 @@
+<h3 style="margin: 20px;">Create a new course</h3>
+
+<div style="margin: 40px;">
+
+    <form #createForm="ngForm" (ngSubmit)="createcourse(createForm.value)">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="createCourseCode" placeholder="AA101" name="code" ngModel>
+            <label for="createCourseCode" class="form-label">Course code</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="createCourseName" placeholder="Name of the course" name="name" ngModel>
+            <label for="createCourseName" class="form-label">Course name</label>
+        </div>
+        Year:
+        <select class="form-select mb-3" style="width: 100px; margin-right: 20px; display: inline;" id="year" name="year" ngModel>
+            <option *ngFor="let year of years">{{year}}</option>
+        </select>
+        Semester:
+        <select class="form-select mb-3" style="width: 150px; display: inline;" id="sem" name="sem" ngModel>
+            <option *ngFor="let sem of sems">{{sem}}</option>
+        </select>
+        <br>
+        Configuration File:
+        <uploader style="display:inline;" (sendfiles)="collectFiles($event)" #uploader></uploader>
+        <br>
+        <input class="btn btn-outline-success" type="submit" value="Submit">
+    </form>
+
+</div>

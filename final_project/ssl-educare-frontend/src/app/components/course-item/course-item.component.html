@@ -1,0 +1,48 @@
+<mat-tab-group>
+    <mat-tab label="Posts 📢">
+        <table class="table" style="margin: 20px;width: 90%;">
+            <colgroup>
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 90%;">
+                
+            </colgroup>
+            <tr *ngFor="let post of posts" (click)="navigateToPost(post)">
+                <td><i class="bi bi-megaphone-fill" style="font-size: 2rem;"></i></td>
+                <td>
+                    <h4>{{post.number+1}}</h4>
+                </td>
+                <td>
+                    <h4>{{post.title}}</h4>
+                </td>
+            </tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Assignments 📝">
+
+        <table class="table" style="margin: 20px;width: 90%;">
+            <colgroup>
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 95%;">
+            </colgroup>
+            <tr *ngFor="let task of assignments" (click)="navigateToSub(task)">
+                <td><i class="bi bi-file-earmark-fill" style="font-size: 2rem;"></i></td>
+                <td>
+                    <h4>{{task.number+1}}</h4>
+                </td>
+                <td>
+                    <h4>{{task.title}}</h4>
+                </td>
+            </tr>
+        </table>
+        
+    </mat-tab>
+</mat-tab-group>
+
+<!--
+<div style="margin: 20px;">
+    <a class="btn btn-outline-primary" href="/courses/{{code}}/addPost">Add a Post</a>
+    <a class="btn btn-outline-primary" href="/courses/{{code}}/addAssign">Add an Assignment</a>
+</div>
+-->

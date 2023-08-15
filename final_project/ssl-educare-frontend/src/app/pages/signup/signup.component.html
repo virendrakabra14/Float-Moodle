@@ -1,0 +1,43 @@
+<section class="vh-50">
+
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+            <h3 class="mb-3">Sign Up</h3>
+          
+            <form  #usercreate = "ngForm" (ngSubmit) = "createUser(usercreate.value)">
+            
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="name" placeholder="Full Name" name="username" ngModel>
+                    <label for="username" class="form-label">Full Name</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="id" placeholder="User ID" name="userid" ngModel>
+                    <label for="userid" class="form-label">User ID</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" ngModel>
+                    <label for="password" class="form-label">Password</label>
+                </div>
+
+                <button class="btn btn-primary btn-lg col-12" type="submit">Sign Up</button>
+            
+            </form>
+
+            <br>
+
+            Already registered? <a class="link-primary" href="/login" style="display: inline;">Log In</a>!
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</section>
+    

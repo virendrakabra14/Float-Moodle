@@ -1,0 +1,78 @@
+<div class="container">
+
+    <h4>Profile</h4>
+    <br>
+    <table class="table">
+        <tr>
+            <th scope="row">Username</th>
+            <td>{{userdata.username}}</td>
+        </tr>
+        <tr>
+            <th scope="row">User ID</th>
+            <td>{{userdata.userID}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Email</th>
+            <td>{{userdata.email}}</td>
+        </tr>
+        <tr>
+            <th scope="row">DOB</th>
+            <td>{{userdata.DOB}}</td>
+        </tr>
+    </table>
+
+    <button (click)="editprofile=!editprofile" class="btn btn-outline-danger" style="margin: 10px;">Edit Details</button>
+    <!-- <button (click)="changepw=true" class="btn btn-outline-danger" style="margin: 10px;">Change Password</button> -->
+    <button (click)="initChangePassword()" class="btn btn-outline-danger" style="margin: 10px;">Change Password</button>
+
+    <div class="container" style="margin: 10px;">
+
+        <form *ngIf="editprofile" #editprofileForm = "ngForm" (ngSubmit) = "submiteditprofile(editprofileForm.value)">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" placeholder="Username" name="username" ngModel>
+                <label for="username" class="form-label">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" placeholder="Email" name="email" ngModel>
+                <label for="email" class="form-label">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="dob" placeholder="DOB" name="DOB" ngModel>
+                <label for="DOB" class="form-label">Date of Birth</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password" ngModel>
+                <label for="password" class="form-label">Confirm Password</label>
+            </div>
+            <button type="submit" class="btn btn-outline-success" style="margin: 10px;">Save Changes</button>
+            <button (click)="editprofile=!editprofile" class="btn btn-outline-danger" style="margin: 10px;">Discard</button>
+            <br><br>
+        </form>
+
+        <form *ngIf="changepw" #changepwForm = "ngForm" (ngSubmit) = "submitchangepw(changepwForm.value)">
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="otp" placeholder="12-Character OTP" name="otp" ngModel>
+                <label for="otp" class="form-label">12-Character OTP (expires in {{changepwtimer}})</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="currpw" placeholder="Current Password" name="currpw" ngModel>
+                <label for="currpw" class="form-label">Current Password</label>
+            </div>
+            <p class="alert alert-danger" *ngIf="notnewpw">The new password is the same as the current password!</p>
+            <p class="alert alert-danger" *ngIf="newpwmismatch">The two passwords below do not match!</p>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="newpw1" placeholder="NewPW1" name="newpw1" ngModel>
+                <label for="newpw1" class="form-label">New Password</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="newpw2" placeholder="NewPW2" name="newpw2" ngModel>
+                <label for="newpw2" class="form-label">New Password, going twice</label>
+            </div>
+            <button type="submit" class="btn btn-outline-success" style="margin: 10px;">Change Password</button>
+            <button (click)="changepw=false" class="btn btn-outline-danger" style="margin: 10px;">Cancel</button>
+            <br>
+        </form>
+
+    </div>
+
+</div>

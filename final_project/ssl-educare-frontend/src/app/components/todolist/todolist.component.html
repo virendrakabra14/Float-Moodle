@@ -1,0 +1,50 @@
+<table class="table">
+
+    <tr>
+        <th style="text-align: center;"><h3>Upcoming</h3></th>
+    </tr>
+
+    <ng-container *ngFor="let item of StudentItems">
+        <tr *ngFor="let obj of item.dueList">
+            <td>
+                <p style="text-align:left;">
+                    {{ item.date | date : 'EEEE' }}, {{item.date}}
+                    <span style="float:right;">
+                        {{obj.dueTime}}
+                    </span>
+                </p>
+                <i *ngIf="obj.type=='Task'" class="bi bi-file-earmark-fill" style="font-size: 2rem; display: inline; float: left;"></i>
+                <a [routerLink] = "['/assignments/'+obj.courseID+'/'+obj.number.toString()]"><h4 style="display: inline;">{{obj.courseCode}}: {{obj.type}} {{obj.number}}</h4></a>
+                <h5 style="margin-left: 3rem;">{{obj.title}}</h5>
+                <p>{{obj.peerProgress}}% students have submitted.</p>
+            </td>
+        </tr>
+        <tr></tr>
+    </ng-container>
+
+    <ng-container *ngFor="let item of ProfItems">
+        <tr *ngFor="let obj of item.dueList">
+            <td>
+                <p style="text-align:left;">
+                    {{ item.date | date : 'EEEE' }}, {{item.date}}
+                </p>
+                <i *ngIf="obj.type=='Task'" class="bi bi-file-earmark-fill" style="font-size: 2rem; display: inline; float: left;"></i>
+                <a [routerLink]="['/courses/profview/'+obj.courseID]"  fragment="task{{obj.number}}"><h4 style="display: inline;">{{obj.courseCode}}: {{obj.type}} {{obj.number}}</h4></a>
+                <h5 style="margin-left: 3rem;">{{obj.title}}</h5>
+                <p>{{obj.leftToGrade}} of {{obj.totalSubmissions}} submissions ungraded.</p>
+            </td>
+        </tr>
+        <tr></tr>
+    </ng-container>
+
+    <ng-container *ngIf="ProfItems.length==0 && StudentItems.length==0">
+        <tr>
+            <td style="text-align: center;">
+                <h3>All Caught Up!</h3>
+                <h1 style="color: green;"><i class="bi bi-check-all"></i></h1>
+            </td>
+        </tr>
+        <tr></tr>
+    </ng-container>
+
+</table>

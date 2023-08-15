@@ -1,0 +1,18 @@
+<div class="container">
+    <h4>Post {{data.number}}: {{data.title}}</h4>
+    <hr/>
+    <p><b>Instruction</b>: {{data.instruction}}</p>
+    <hr/>
+    <p *ngIf="!data.published"><b>Will be released on</b>: {{data.releaseDate}}, {{data.releaseTime}}</p>
+    <p *ngIf="data.published"><b>Released on</b>: {{data.releaseDate}}, {{data.releaseTime}}</p>
+    <hr/>
+    <div *ngIf="data.hasfiles">
+        Files:
+        <downloader [url]="data.files.url" [filename]="data.files.name"></downloader>
+    </div>
+    <hr/>
+    <b>Discussion</b>:
+    <div>
+        <app-commentstack [disabled]="!data.discussable" [parentID]="data.id" [comments]="data.comments"></app-commentstack>
+    </div>
+</div>

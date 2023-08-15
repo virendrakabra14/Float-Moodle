@@ -1,0 +1,90 @@
+<div class="container">
+
+    <!-- <h5 style="display: inline;">{{title}}&emsp;</h5> -->
+    <div class="btn-group">
+        <button class="btn btn-outline-primary" *ngIf="(!editing)&&(!(title=='Instructors'&&level<4))&&(level>2)" (click)="editing=true">Edit</button>
+        <button class="btn btn-outline-success" *ngIf="editing" (click)="editing=false;sendList()">Save</button>
+        <button class="btn btn-outline-secondary" (click)="downloadList()">Download</button>
+    </div>
+
+    <div *ngIf="editing" style="margin: 10px;">
+        <!-- Add students by file:<uploader (sendfiles)="collectFiles($event)" #uploader></uploader><br> -->
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Add {{title}}</span>
+            </div>
+            <input type="text" class="form-control" placeholder="User ID1, User ID2, ..." aria-label="User IDs" #newmembers>
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" (click)="addMembers()">Add</button>
+                <button class="btn btn-outline-danger" (click)="editing=false">Stop Editing</button>
+            </div>
+        </div>
+    </div>
+
+    <table #table class="table" style="margin: 10px; margin-bottom: 30px;">
+
+        <colgroup *ngIf="title=='Students'">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 28%;">
+            <col span="1" style="width: 28%;">
+            <ng-container *ngIf="data['memberdata']!=undefined">
+                <col *ngFor="let taskgrade of data['memberdata'][0].taskGrades" span="1" style="width: 5%;">
+            </ng-container>
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <colgroup *ngIf="title=='Instructors'">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 28%;">
+            <col span="1" style="width: 40%;">
+        </colgroup>
+        <colgroup *ngIf="title=='Wizards'">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 28%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+
+        <tr>
+            <th>User ID</th>
+            <th>UserName</th>
+            <th>Email</th>
+            <ng-container *ngIf="title=='Students'&&data['memberdata']!=undefined" >
+                <th *ngFor="let taskgrade of data['memberdata'][0].taskGrades">{{taskgrade.name}}</th>
+            </ng-container>
+            <th *ngIf="title=='Students'">Cumulative Score</th>
+            <th *ngIf="title=='Wizards'">Access Level</th>
+            <th *ngIf="title=='Wizards'"></th>          <!--empty, to align-->
+            <th *ngIf="title=='Instructors'"></th>      <!--empty-->
+            <th *ngIf="title=='Instructors'"></th>      <!--empty-->
+        </tr>
+
+        <tr *ngFor="let datum of data['memberdata']">
+            <td>{{datum.userID}}</td>
+            <td>{{datum.username}}</td>
+            <td>{{datum.email}}</td>
+            <!-- <td *ngIf="title=='Students"></td> -->
+            <ng-container *ngIf="true">
+                <td *ngFor="let taskgrade of datum.taskGrades">
+                    <button style="font-size: xx-small;padding: 0px;" (click)="saveUserSubmission(datum.userID, taskgrade.name)"><i class="bi bi-arrow-down"></i></button>{{taskgrade.score}}
+                </td>
+            </ng-container>
+            <td *ngIf="title=='Students'">{{datum.score}}</td>
+
+            <td *ngIf="title=='Wizards'">
+                {{getLevelbyId(datum)}}
+                <div *ngIf="editing" style="display: inline;">
+                <button class="btn btn-outline-success btn-sm" (click)="changeLevelbyId(datum.userID,+1)"><i class="bi bi-arrow-up"></i></button>
+                <button class="btn btn-outline-danger btn-sm" (click)="changeLevelbyId(datum.userID,-1)"><i class="bi bi-arrow-down"></i></button>
+                </div>
+            </td>
+            <td *ngIf="title=='Wizards'"></td>          <!--empty-->
+            <td *ngIf="title=='Instructors'"></td>      <!--empty-->
+            <td *ngIf="title=='Instructors'"></td>      <!--empty-->
+            <td>
+                <button type="button" class="btn btn-outline-danger btn-sm" *ngIf="editing" (click)="remove(datum.userID)"><i class="bi bi-x-circle"></i> Remove</button>
+            </td>
+        </tr>
+        
+    </table>
+
+</div>
